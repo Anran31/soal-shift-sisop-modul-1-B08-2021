@@ -69,6 +69,12 @@ Untuk menghitung jumlah kemunculan tiap error, maka hasil dari command di atas d
         12 Tried to add information to closed ticket
 ```
 
+### 1c
+Pada soal 1c, kita harus menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya. Kita dapat menggunakan command dibawah ini untuk menyelesaikan soal ini
+```bash
+    
+```
+
 ### No 2
 
 Kita merupakan kepala gudang yang mengatur keluar masuknya barang di sebuah _startup_ bernama "TokoShiSop". Steven, Manis, dan Clemong meminta kita untuk mencari beberapa kesimpulan dari data penjualan “Laporan-TokoShiSop.tsv”.

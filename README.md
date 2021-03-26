@@ -143,6 +143,11 @@ Untuk menyelasaikan soal pada poin ini, maka dapat menggunakan:
     printf "%s,%d\n" "$message" "$count" >> error_message.csv
     done 
 ```
+Pertama, kita membuat file error_message.csv yang berisikan header Error,Count menggunakan:
+
+```bash
+    printf "Error,Count\n" > error_message.csv
+```
 
 Karena hasil dari poin 1b belum terurut berdasarkan jumlah kemunculan pesan error dari yang terbanyak, maka dapat menggunakan `sort -nr` untuk mengurutkannya dimana option `n` digunakan untuk mengurutkan secara numerik dan option `r` digunakan untuk mengurutkan dari yang terbesar. Akan didapatkan hasil seperti ini:
 
@@ -155,7 +160,48 @@ Karena hasil dari poin 1b belum terurut berdasarkan jumlah kemunculan pesan erro
          7 Ticket doesn't exist
 ```
 
-Dari hasil tersebut, kita menggunakan `while` loop pada setiap baris untuk menyesuaikannya sesuai format. Untuk mengambil jumlah kemunculan pesan error menggunakan command `grep -oP "([0-9].*?(?=\ ))" <<< "$line"` dengan regex  `([0-9].*?(?=\ ))`, regex tersebut digunakan untuk mengambil seluruh angka 0-9 sampai sebelum bertemu dengan spasi ` `.  Sedangkan untuk mengambil pesan errornya menggunakan command `grep -oP "(?<=\d\ ).*\w" <<< "$line"` dengan regex `(?<=\d\ ).*\w`, dimana regex `(?<=\d\ ))` digunakan untuk mengambil string yang dimana sebelumnya berisi digit dan spasi `\d\ ` dan regex `.*\w` untuk mengambil semua string yang berisi huruf.
+Dari hasil tersebut, kita menggunakan `while` loop pada setiap baris untuk menyesuaikannya sesuai format. 
+
+```bash
+    count=$(grep -oP "([0-9].*?(?=\ ))" <<< "$line")
+```
+
+Command di atas digunakan untuk mengambil jumlah kemunculan pesan error. Command `grep` dengan regex  `([0-9].*?(?=\ ))`, dimana regex tersebut digunakan untuk mengambil seluruh angka 0-9 sampai sebelum bertemu dengan spasi ` `, kemudian disimpan di variabel `count`.  
+
+```bash
+    message=$(grep -oP "(?<=\d\ ).*\w" <<< "$line")
+```
+Sedangkan command di atas digunakan untuk mengambil pesan error menggunakan command `grep` dengan regex `(?<=\d\ ).*\w`, dimana regex `(?<=\d\ ))` digunakan untuk mengambil string yang dimana sebelumnya berisi digit dan spasi `\d\ ` dan regex `.*\w` untuk mengambil semua string yang berisi huruf, kemudian disimpan di variabel `message`.
+
+Setelah itu diappend ke error_message.csv sesuai dengan format menggunakan:
+
+```bash
+    printf "%s,%d\n" "$message" "$count" >> error_message.csv
+```
+
+### 1e
+Pada poin 1e, kita disuruh menggunakan informasi yang didapatkan pada poin 1c untuk dituliskan ke dalam file user_statistic.csv dengan header Username,INFO,ERROR diurutkan berdasarkan username secara ascending. Untuk menyelesaikan problem poin ini, kita dapat menggunakan:
+
+```bash
+    printf "Username,INFO,ERROR\n" > user_statistic.csv
+    grep -oP "((?<=\().*?(?=\)))" syslog.log | sort | uniq | while read -r user; do
+    errorCount=$(grep -w "$user" syslog.log | grep "ERROR" | wc -l)
+    infoCount=$(grep -w "$user" syslog.log | grep "INFO" | wc -l)
+    printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount" >> user_statistic.csv
+    done
+```
+
+Karena pada poin 1c kita sudah mendapatkan baris sesuai format, maka kita hanya perlu membuat file user_statistic.csv kemudian menambahkan header menggunakan:
+
+```bash
+    printf "Username,INFO,ERROR\n" > user_statistic.csv
+```
+
+Kemudian meng-append seluruh hasil dari poin 1c ke user_statistic.csv.
+
+```bash
+    printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount" >> user_statistic.csv
+```
 
 ### No 2
 

@@ -1,7 +1,16 @@
 # soal-shift-sisop-modul-1-B08-2021
  
 ### No 1
-
+Pada soal nomor 1, kita mempunyai data _syslog.log_ dari aplikasi _ticky_. _syslog.log_ berisikan data sebagai berikut:
+```text
+    Jan 31 00:16:25 ubuntu.local ticky: INFO Closed ticket [#1754] (noel)
+    Jan 31 00:21:30 ubuntu.local ticky: ERROR The ticket was modified while updating (breee)
+    ...
+```
+Setiap baris pada data tersebut memiliki format sebagai berikut:
+```text
+    <time> <hostname> <app_name>: <log_type> <log_message> (<username>)
+```
 
 ### No 2
 

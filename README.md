@@ -42,6 +42,7 @@ Ketika kita menjalankan command di atas, maka kita akan mendapatkan hasil sepert
 ### 1b
 
 Pada soal 1b, Kita disuruh menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
+Untuk menyelesaikan soal pada poin ini, maka kita dapat menggunakan command:
 
 ```bash
     grep -oP "((?<=ERROR\ ).*?(?=\ \())" syslog.log | sort | uniq -c
@@ -58,7 +59,7 @@ Ketika kita menjalankan ```bash grep -oP "((?<=ERROR\ ).*?(?=\ \())" syslog.log`
     ...
 ```
 
-Untuk menghitung jumlah kemunculan tiap error, maka hasil dari command di atas dapat kita ```bash sort``` untuk mengurutkan hasilnya kemudian menggunakan ```bash uniq -c``` untuk menghitung jumlah kemunculan setiap error message. Setelah menjalankan ```bash  grep -oP "((?<=ERROR\ ).*?(?=\ \())" syslog.log | sort | uniq -c``` maka akan muncul hasil seperti ini:
+Untuk menghitung jumlah kemunculan tiap error, maka hasil dari command di atas dapat kita `sort` untuk mengurutkan hasilnya kemudian menggunakan `uniq -c` untuk menghitung jumlah kemunculan setiap error message. Setelah menjalankan `grep -oP "((?<=ERROR\ ).*?(?=\ \())" syslog.log | sort | uniq -c` maka akan muncul hasil seperti ini:
 
 ```text
         13 Connection to DB failed
@@ -70,10 +71,91 @@ Untuk menghitung jumlah kemunculan tiap error, maka hasil dari command di atas d
 ```
 
 ### 1c
-Pada soal 1c, kita harus menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya. Kita dapat menggunakan command dibawah ini untuk menyelesaikan soal ini
+
+Pada soal 1c, kita harus menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya.
+Untuk menyelesaikan soal pada poin ini, maka kita dapat menggunakan command:
+
 ```bash
-    
+    grep -oP "((?<=\().*?(?=\)))" syslog.log | sort | uniq | while read -r user; do
+    errorCount=$(grep -w "$user" syslog.log | grep "ERROR" | wc -l)
+    infoCount=$(grep -w "$user" syslog.log | grep "INFO" | wc -l)
+    printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount"
+    done
 ```
+
+Karena kita mengetahui pada _syslog.log_ username berada pada `(<username>)`, maka kita dapat menggunakan `grep -oP "((?<=\().*?(?=\)))" syslog.log` untuk mengambil username dari setiap baris _syslog.log_. Regex `(?<=\()` berarti harus terdapat `(` sebelum string yang kita ambil, regex `.*` digunakan untuk mengambil seluruh string setelahnya, dan regex `?(?=\))` digunakan untuk membatasi string yang kita ambil sampai sebelum terdapat `)`.
+
+Jika kita menjalankan command `grep -oP "((?<=\().*?(?=\)))" syslog.log`, maka kita akan mendapatkan hasil:
+```text
+    ...
+    noel
+    breee
+    ac
+    ...
+```
+
+Setelah itu, supaya tidak ada username yang duplikat, dengan menggunakkan command `sort` kemudian `uniq`, maka kita akan mendapatkan hasil:
+```text
+    ac
+    ahmed.miller
+    blossom
+    bpacheco
+    ...
+```
+
+Kemudian untuk mendapatkan jumlah ERROR dan INFO dari setiap username, dapat menggunakan:
+
+```bash
+    while read -r user; do
+    errorCount=$(grep -w "$user" syslog.log | grep "ERROR" | wc -l)
+    infoCount=$(grep -w "$user" syslog.log | grep "INFO" | wc -l)
+    printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount"
+```
+
+Dengan menggunakan `while` loop untuk setiap baris pada hasil command sebelumnya, maka kita dapat menemukan jumlah ERROR yang dimiliki user tersebut menggunakan:
+
+```bash
+    errorCount=$(grep -w "$user" syslog.log | grep "ERROR" | wc -l)
+```
+
+Pada command diatas, option `w` pada `grep` berfungsi untuk mengambil string yang memiliki kata yang benar-benar sama dengan `username` yang dicari. Kemudian kita mengambil string yang terdapat kata `ERROR`, setelah itu jumlah baris hasil kedua perintah sebelumnya dihitung menggunakan command `wc -l` dan disimpan di variabel `errorCount`. Maka kita akan mendapatkan jumlah ERROR yang dimiliki oleh user tertentu.
+
+Sedangkan untuk mendapatkan jumlah INFO yang dimiliki user tersebut, commandnya hampir sama dengan command untuk mendapatkan jumlah ERROR, tetapi command `grep "ERROR"` diganti dengan `grep "INFO"` dan disimpan di variabel `infoCount`.
+
+### 1d
+
+Pada soal 1d, dengan data yang kita dapatkan di poin 1b, kita harus membuat file error_message.csv dengan header Error,Count yang kemudian diikuti oleh daftar pesan error dan jumlah kemunculannya diurutkan berdasarkan jumlah kemunculan pesan error dari yang terbanyak seperti ini:
+
+```text
+    Error,Count
+    Permission denied,5
+    File not found,3
+    Failed to connect to DB,2
+```
+
+Untuk menyelasaikan soal pada poin ini, maka dapat menggunakan:
+
+```bash
+    printf "Error,Count\n" > error_message.csv
+    grep -oP '(?<=ERROR\ ).*?(?=\ \()' syslog.log | sort | uniq -c | sort -nr | while read -r line; do
+    count=$(grep -oP "([0-9].*?(?=\ ))" <<< "$line")
+    message=$(grep -oP "(?<=\d\ ).*\w" <<< "$line")
+    printf "%s,%d\n" "$message" "$count" >> error_message.csv
+    done 
+```
+
+Karena hasil dari poin 1b belum terurut berdasarkan jumlah kemunculan pesan error dari yang terbanyak, maka dapat menggunakan `sort -nr` untuk mengurutkannya dimana option `n` digunakan untuk mengurutkan secara numerik dan option `r` digunakan untuk mengurutkan dari yang terbesar. Akan didapatkan hasil seperti ini:
+
+```text
+        15 Timeout while retrieving information
+        13 Connection to DB failed
+        12 Tried to add information to closed ticket
+        10 Permission denied while closing ticket
+         9 The ticket was modified while updating
+         7 Ticket doesn't exist
+```
+
+Dari hasil tersebut, kita menggunakan `while` loop pada setiap baris untuk menyesuaikannya sesuai format. Untuk mengambil jumlah kemunculan pesan error menggunakan command `grep -oP "([0-9].*?(?=\ ))" <<< "$line"` dengan regex  `([0-9].*?(?=\ ))`, regex tersebut digunakan untuk mengambil seluruh angka 0-9 sampai sebelum bertemu dengan spasi ` `.  Sedangkan untuk mengambil pesan errornya menggunakan command `grep -oP "(?<=\d\ ).*\w" <<< "$line"` dengan regex `(?<=\d\ ).*\w`, dimana regex `(?<=\d\ ))` digunakan untuk mengambil string yang dimana sebelumnya berisi digit dan spasi `\d\ ` dan regex `.*\w` untuk mengambil semua string yang berisi huruf.
 
 ### No 2
 

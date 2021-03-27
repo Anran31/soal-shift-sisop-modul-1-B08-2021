@@ -678,7 +678,18 @@ Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kec
 Untuk menyelesaikan soal ini, maka kita hanya perlu membuat tugas untuk dijalankan crontab seperti ini:
 
 ```bash
-    0 18 * * 1-5 cd /home/anran/sisop/shift1/soal3 && pass=$(date +"\%m\%d\%Y") && unzip -P $pas>
+    0 18 * * 1-5 cd /home/anran/sisop/shift1/soal3 && pass=$(date +"\%m\%d\%Y") && unzip -P $pass=$(date +"\%m\%d\%Y") && unzip -P $pass Koleksi.zip && rm Koleksi.zip
+    0 7 * * 1-5 /bin/bash /home/anran/sisop/shift1/soal3/soal3d.sh
+```
+#### Penjelasan
+
+```bash
     0 7 * * 1-5 /bin/bash /home/anran/sisop/shift1/soal3/soal3d.sh
 ```
 
+Karena kuuhaku meminta untuk men-zip seluruh foldernya pada jam 7 pagi setiap hari senin-jumat, maka kita hanya perlu menjalankan script pada soal poin 3d.
+
+```bash
+    0 18 * * 1-5 cd /home/anran/sisop/shift1/soal3 && pass=$(date +"\%m\%d\%Y") && unzip -P $pass=$(date +"\%m\%d\%Y") && unzip -P $pass Koleksi.zip && rm Koleksi.zip
+```
+Sedangkan saat jam 18.00 setiap hari senin-jumat, akan menjalankan crontab di atas. Pertama, kita harus pindah ke direktori tempat kita menyimpan Koleksi.zip menggunakan `cd /home/anran/sisop/shift1/soal3`. Kedua, kita menginisialisasi variabel `pass` yang berisi password untuk meng-unzip Koleksi.zip. Kemudian kita meng-unzip `Koleksi.zip` menggunakan command `unzip -P $pass Koleksi.zip` dan setelah itu menghapus `Koleksi.zip` setelah selesai meng-unzip.

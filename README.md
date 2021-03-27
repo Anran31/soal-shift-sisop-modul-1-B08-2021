@@ -648,3 +648,15 @@ Fungsi download adalah gabungan dari script 3a dan 3b, tetapi yang membedakannya
 
 ### 3d
 
+Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan **memindahkan seluruh folder ke zip** yang diberi nama “Koleksi.zip” dan mengunci **zip** tersebut dengan **password** berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
+
+```bash
+    #!/bin/bash
+
+    pass=$(date +"%m%d%Y")
+    cd /home/anran/sisop/shift1/soal3
+    for dirName in K*_*; do
+	zip -q -P $pass -r Koleksi $dirName
+        rm -r $dirName
+        done
+```

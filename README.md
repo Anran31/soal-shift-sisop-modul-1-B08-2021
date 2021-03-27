@@ -86,6 +86,7 @@ Untuk menyelesaikan soal pada poin ini, maka kita dapat menggunakan command:
 Karena kita mengetahui pada _syslog.log_ username berada pada `(<username>)`, maka kita dapat menggunakan `grep -oP "((?<=\().*?(?=\)))" syslog.log` untuk mengambil username dari setiap baris _syslog.log_. Regex `(?<=\()` berarti harus terdapat `(` sebelum string yang kita ambil, regex `.*` digunakan untuk mengambil seluruh string setelahnya, dan regex `?(?=\))` digunakan untuk membatasi string yang kita ambil sampai sebelum terdapat `)`.
 
 Jika kita menjalankan command `grep -oP "((?<=\().*?(?=\)))" syslog.log`, maka kita akan mendapatkan hasil:
+
 ```text
     ...
     noel
@@ -95,6 +96,7 @@ Jika kita menjalankan command `grep -oP "((?<=\().*?(?=\)))" syslog.log`, maka k
 ```
 
 Setelah itu, supaya tidak ada username yang duplikat, dengan menggunakkan command `sort` kemudian `uniq`, maka kita akan mendapatkan hasil:
+
 ```text
     ac
     ahmed.miller

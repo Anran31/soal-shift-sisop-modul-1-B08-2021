@@ -264,13 +264,72 @@ Karena kita membutuhkan **daftar nama customer pada transaksi tahun 2017 di Albu
 
 `$2~/2017/` berarti di kolom 2 (**Order ID**) harus terdapat tahun 2017 dan `$10~/Albuquerque/` berarti di kolom 10 (**City**) harus berada di Albuquerque. Setelah itu supaya tidak ada nama Customer yang duplikat, Nama Customer disimpan sebagai index di map `listNama[$7]`, dimana `$7` merupakan kolom yang terdapat **Customer Name**.
 
-Kemudian ketika sudah selesai mencari pada seluruh baris, daftar nama customer dapat diprint menggunakan:
+Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` daftar nama customer dapat diprint sesuai format ke `hasil.txt` menggunakan:
 
 ```bash
+    END {
+    printf("\nDaftar nama customer di Albuquerque pada tahun 2017 antara lain:\n");
     for (nama in listNama) {
     printf ("%s\n",nama)
   }
+}' Laporan-TokoShiSop.tsv >> hasil.txt
 ```
 
 ### 2c
+
+Pada poin ini, Clemong membutuhkan **segment customer** dan **jumlah transaksinya** yang paling sedikit. TokoShiSop berfokus tiga segment customer, antara lain: Home Office, Consumer, dan Corporate. Untuk menyelesaikan soal ini, kita dapat menggunakan `awk` seperti ini:
+
+```bash
+    BEGIN{FS="\t"}
+
+    $8~/Consumer/||$8~/Corporate/||$8~/Home Office/ {listSegment[$8]++}
+
+    END {
+        i=0;
+        orderMin;
+        segMin;
+        for (seg in listSegment) {
+            if(i==0){
+    	    orderMin=listSegment[seg];
+	        segMin=seg;
+	        i++;
+            }
+            else if(listSegment[seg]<orderMin){
+	        orderMin=listSegment[seg];
+	        segMin=seg
+            }
+        } 
+        printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n",segMin,orderMin)
+    }' Laporan-TokoShiSop.tsv >> hasil.txt
+```
+
+Untuk menghitung jumlah transaksi per segment, maka kita dapat menghitung jumlah baris data yang mengandung masing-masing segment. Karena **Segment** berada pada kolom ke 8, kita menggunakan map `listSegment` dengan indeks `$8` yang isinya akan selalu bertambah 1 ketika menemukan baris yang mengandung indeksnya.
+
+```bash
+    $8~/Consumer/||$8~/Corporate/||$8~/Home Office/ {listSegment[$8]++}
+```
+
+Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **segment customer** dengan**jumlah transaksinya** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listSegment`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
+
+```bash
+    END {
+        i=0;
+        orderMin;
+        segMin;
+        for (seg in listSegment) {
+            if(i==0){
+    	    orderMin=listSegment[seg];
+	        segMin=seg;
+	        i++;
+            }
+            else if(listSegment[seg]<orderMin){
+	        orderMin=listSegment[seg];
+	        segMin=seg
+            }
+        } 
+        printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n",segMin,orderMin)
+    }' Laporan-TokoShiSop.tsv >> hasil.txt
+```
+
+### 2d
 ## No 3

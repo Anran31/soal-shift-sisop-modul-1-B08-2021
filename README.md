@@ -205,24 +205,35 @@ Kemudian meng-append seluruh hasil dari poin 1c ke user_statistic.csv.
     printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount" >> user_statistic.csv
 ```
 
-### No 2
+## No 2
 
-Kita merupakan kepala gudang yang mengatur keluar masuknya barang di sebuah _startup_ bernama "TokoShiSop". Steven, Manis, dan Clemong meminta kita untuk mencari beberapa kesimpulan dari data penjualan “Laporan-TokoShiSop.tsv”.
+Kita merupakan kepala gudang yang mengatur keluar masuknya barang di sebuah _startup_ bernama "TokoShiSop". Steven, Manis, dan Clemong meminta kita untuk mencari beberapa kesimpulan dari data penjualan “Laporan-TokoShiSop.tsv” kemudian seluruh hasilnya disimpan di `hasil.txt`. “Laporan-TokoShiSop.tsv” memiliki 21 kolom data yang berisikan data seperti **Row ID**, **Customer Name**,**Sales**, **Profit**, dan lain-lain.
 
-* Steven ingin mengapresiasi kinerja karyawannya selama ini dengan mengetahui **Row ID** dan **profit percentage terbesar** (jika hasil profit percentage terbesar lebih dari 1, maka ambil Row ID yang paling besar). Karena kamu bingung, Clemong memberikan definisi dari _profit percentage_, yaitu:
+### 2a
+Steven ingin mengapresiasi kinerja karyawannya selama ini dengan mengetahui **Row ID** dan **profit percentage terbesar** (jika hasil profit percentage terbesar lebih dari 1, maka ambil Row ID yang paling besar). Karena kamu bingung, Clemong memberikan definisi dari _profit percentage_, yaitu:
 
-    _Profit Percentage_ = (_Profit_/_Cost Price_) x 100
+```text
+Profit Percentage_ = (_Profit_/_Cost Price_) x 100
+```
 
-    _Cost Price_ didapatkan dari pengurangan _Sales_ dengan _Profit_ (**Quantity diabaikan**)
+Cost Price_didapatkan dari pengurangan_Sales_ dengan _Profit_ (**Quantity diabaikan**)
+
+Untuk mendapatkan **Profit Percentage terbesar**, maka kita harus mengecek dari setiap baris data yang ada, berapa besar Profit Percentage per baris. Untuk mempermudah mengerjakan soal pada nomor 2, kita dapat menggunakan `awk` seperti di bawah ini:  
 
 ```bash
-awk '
-BEGIN{FS="\t";MaxPP=0}
-{
-    PP=($21/($18-$21))*100
-    if(PP >= MaxPP) {MaxPP=PP;MaxID=$1};
-}
-END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.tx
+    awk '
+    BEGIN{FS="\t";MaxPP=0}
+    {
+    if (NR>1) {
+	    PP=($21/($18-$21))*100
+        if(PP >= MaxPP) {MaxPP=PP;MaxID=$1};};
+    }
+    END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d     dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.txt
 ```
+Pada blok `BEGIN` terdapat `FS="\t"` untuk memberi tahu `awk` bahwa `Field Separator` yang digunakan adalah tab("\t"), kemudian kita juga menginisialisasi variabel `MaxPP` untuk menyimpan **Profit Percentage terbesar** yang ditemukan.
+
+Kemudian `if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Untuk setiap baris, kita menghitung **Profit Percentage** sesuai dengan rumus dimana `$21` merupakan kolom yang memiliki data **Profit** dan `$18` memlik data **Sales**. Jika **Profit Percentage** pada baris tertentu lebih besar daripada **Profit Percentage terbesar** yang tersimpan, maka **Profit Percentage terbesar** akan direplace, serta **Row ID** disimpan di variabel `MaxID`.
+
+Ketika sudah mengecek sampai akhir maka pada blok `END` akan diprint sesuai format di `hasil.txt`.
 
 ### No 3

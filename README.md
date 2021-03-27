@@ -498,3 +498,50 @@ Dan kode bagian terakhir ini digunakan untuk merename file yang masih berformat 
 
 ### 3b
 Karena Kuuhaku malas untuk menjalankan script tersebut secara manual, ia juga meminta kalian untuk menjalankan script tersebut **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali (1,8,...)**, serta dari **tanggal 2 empat hari sekali(2,6,...)**. Supaya lebih rapi, gambar yang telah diunduh beserta log-nya, dipindahkan ke folder dengan nama tanggal unduhnya dengan format "DD-MM-YYYY" (contoh : "13-03-2023").
+
+Karena pada script poin a kita belum membuat sebuah folder untuk menampung seluruh gambar yang kita download, maka kita harus membuat script baru seperti ini:
+
+```bash
+    #!/bin/bash
+
+    cd /home/anran/sisop/shift1/soal3
+    dirName=$(date +"%d-%m-%Y")
+
+    if [ ! -d "$dirName" ]; then
+        mkdir $dirName
+
+        bash /home/anran/sisop/shift1/soal3/soal3a.sh
+        mv Koleksi_{01..23} $dirName &> /dev/null
+        mv Foto.log $dirName
+    fi
+```
+
+Karena ingin menjalankan script di atas secara terjadwal, maka kita dapat menggunakan crontab dengan crontab seperti:
+
+```text
+    0 20 1-31/7 * * /bin/bash /home/anran/sisop/shift1/soal3/soal3b.sh
+    0 20 2-31/4 * * /bin/bash /home/anran/sisop/shift1/soal3/soal3b.sh
+```
+
+#### Penjelasan
+
+```bash
+    cd /home/anran/sisop/shift1/soal3
+    dirName=$(date +"%d-%m-%Y")
+```
+
+Bagian `cd` digunakan untuk memindah lokasi script kita bekerja ke directory tempat kita menjalankan script 3a. Varibel `dirName` digunakan untuk menyimpan format tanggal sesuai keinginan yang nantinya akan digunakan sebagai nama directory tempat kita menyimpan seluruh gambar yang telah kita download.
+
+```bash
+    if [ ! -d "$dirName" ]; then
+        mkdir $dirName
+
+        bash /home/anran/sisop/shift1/soal3/soal3a.sh
+        mv Koleksi_{01..23} $dirName &> /dev/null
+        mv Foto.log $dirName
+    fi
+```
+
+Karena kita hanya perlu menjalankan script ini sekali saja, maka pada bagian di atas digunakan untuk mengecek apakah pada suatu hari kita sudah pernah membuat direktori dengan nama `$dirName`. Jika iya maka tidak perlu menjalankan apa-apa, tetapi jika belum, maka kita akan membuat direktori baru bernama `$dirName` yaitu tanggal hari tersebut, kemudian kita menjalankan script yang ada pada poin 3a, kemudian memindahkan seluruh foto yang terdownload beserta log nya ke direktori yang barusan dibuat.
+
+### 3c

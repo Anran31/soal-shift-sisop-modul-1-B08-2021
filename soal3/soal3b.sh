@@ -1,10 +1,9 @@
 #!/bin/bash
 
 cd /home/anran/sisop/shift1/soal3
-dirName="$(date +%d)-$(date +%m)-$(date +%Y)"
+dirName=$(date +"%d-%m-%Y")
 mkdir $dirName
 
 bash /home/anran/sisop/shift1/soal3/soal3a.sh
-mv *.jpg $dirName
+mv Koleksi_{01..23} $dirName &> /dev/null
 mv Foto.log $dirName
-

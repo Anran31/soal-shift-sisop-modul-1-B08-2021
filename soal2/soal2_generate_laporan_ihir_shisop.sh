@@ -1,17 +1,21 @@
 #!/bin/bash
 export LC_ALL=C 
 
+#2a
 awk '
 BEGIN{FS="\t";MaxPP=0}
 {
-PP=($21/($18-$21))*100
-if(PP >= MaxPP) {MaxPP=PP;MaxID=$1};
+  if (NR>1) {
+	PP=($21/($18-$21))*100
+	if(PP >= MaxPP) {MaxPP=PP;MaxID=$1};
+  };
 }
 END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.txt
 
-export LC_ALL= 
+#2b 
 awk '
 BEGIN{FS="\t"}
+
 
 $2~/2017/ && $10~/Albuquerque/ {listNama[$7]++}
 
@@ -22,6 +26,7 @@ END {
   }
 }' Laporan-TokoShiSop.tsv >> hasil.txt
 
+#2c
 awk '
 BEGIN{FS="\t"}
 
@@ -45,6 +50,7 @@ segMin;
 printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n",segMin,orderMin)
 }' Laporan-TokoShiSop.tsv >> hasil.txt
 
+#2d
 awk '
 BEGIN{FS="\t"}
 
@@ -65,5 +71,5 @@ regMin;
         regMin=reg
     }
   }
-printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %d\n",regMin,profitMin)
+printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %.2f\n",regMin,profitMin)
 }' Laporan-TokoShiSop.tsv >> hasil.txt

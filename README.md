@@ -228,7 +228,7 @@ Untuk mendapatkan **Profit Percentage terbesar**, maka kita harus mengecek dari 
 	    PP=($21/($18-$21))*100
         if(PP >= MaxPP) {MaxPP=PP;MaxID=$1};};
     }
-    END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d     dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.txt
+    END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.txt
 ```
 Pada blok `BEGIN` terdapat `FS="\t"` untuk memberi tahu `awk` bahwa `Field Separator` yang digunakan adalah tab("\t"), kemudian kita juga menginisialisasi variabel `MaxPP` untuk menyimpan **Profit Percentage terbesar** yang ditemukan.
 

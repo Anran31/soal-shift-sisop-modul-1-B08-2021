@@ -210,7 +210,7 @@ Kemudian meng-append seluruh hasil dari poin 1c ke user_statistic.csv.
 Kita merupakan kepala gudang yang mengatur keluar masuknya barang di sebuah _startup_ bernama "TokoShiSop". Steven, Manis, dan Clemong meminta kita untuk mencari beberapa kesimpulan dari data penjualan “Laporan-TokoShiSop.tsv” kemudian seluruh hasilnya disimpan di `hasil.txt`. “Laporan-TokoShiSop.tsv” memiliki 21 kolom data yang berisikan data seperti **Row ID**, **Customer Name**,**Sales**, **Profit**, dan lain-lain.
 
 ### 2a
-Steven ingin mengapresiasi kinerja karyawannya selama ini dengan mengetahui **Row ID** dan **profit percentage terbesar** (jika hasil profit percentage terbesar lebih dari 1, maka ambil Row ID yang paling besar). Karena kamu bingung, Clemong memberikan definisi dari _profit percentage_, yaitu:
+Pada poin ini, Steven ingin mengapresiasi kinerja karyawannya selama ini dengan mengetahui **Row ID** dan **profit percentage terbesar** (jika hasil profit percentage terbesar lebih dari 1, maka ambil Row ID yang paling besar). Karena kamu bingung, Clemong memberikan definisi dari _profit percentage_, yaitu:
 
 ```text
 Profit Percentage_ = (_Profit_/_Cost Price_) x 100
@@ -236,4 +236,41 @@ Kemudian `if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Untuk
 
 Ketika sudah mengecek sampai akhir maka pada blok `END` akan diprint sesuai format di `hasil.txt`.
 
-### No 3
+### 2b
+Pada poin ini, Clemong memiliki rencana promosi di Albuquerque menggunakan metode MLM. Oleh karena itu, Clemong membutuhkan **daftar nama customer pada transaksi tahun 2017 di Albuquerque**.
+
+Untuk menyelesaikan soal poin ini, kita dapat menggunakan `awk` seperti ini:
+
+```bash
+    awk '
+    BEGIN{FS="\t"}
+
+
+    $2~/2017/ && $10~/Albuquerque/ {listNama[$7]++}
+
+    END {
+    printf("\nDaftar nama customer di Albuquerque pada tahun 2017 antara lain:\n");
+    for (nama in listNama) {
+    printf ("%s\n",nama)
+  }
+}' Laporan-TokoShiSop.tsv >> hasil.txt
+```
+
+Karena kita membutuhkan **daftar nama customer pada transaksi tahun 2017 di Albuquerque**, maka kita perlu memfilter baris menggunakan :
+
+```bash
+    $2~/2017/ && $10~/Albuquerque/ {listNama[$7]++}
+```
+
+`$2~/2017/` berarti di kolom 2 (**Order ID**) harus terdapat tahun 2017 dan `$10~/Albuquerque/` berarti di kolom 10 (**City**) harus berada di Albuquerque. Setelah itu supaya tidak ada nama Customer yang duplikat, Nama Customer disimpan sebagai index di map `listNama[$7]`, dimana `$7` merupakan kolom yang terdapat **Customer Name**.
+
+Kemudian ketika sudah selesai mencari pada seluruh baris, daftar nama customer dapat diprint menggunakan:
+
+```bash
+    for (nama in listNama) {
+    printf ("%s\n",nama)
+  }
+```
+
+### 2c
+## No 3

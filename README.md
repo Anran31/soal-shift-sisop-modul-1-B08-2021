@@ -332,4 +332,73 @@ Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita m
 ```
 
 ### 2d
+
+Pada poin ini, Manis ingin mencari **wilayah bagian (region) yang memiliki total keuntungan (profit) paling sedikit dan total keuntungan wilayah tersebut**. Untuk menyelesaikan soal ini, kita dapat menggunakan `awk` seperti ini:
+
+```bash
+    awk '
+    BEGIN{FS="\t"}
+
+    {if(NR>1){listRegProf[$13]+=$21}}
+
+    END {
+        i=0;
+        profitMin;
+        regMin;
+        for (reg in listRegProf) {
+        if(i==0){
+            profitMin=listRegProf[reg];
+            regMin=reg;
+            i++;
+        }
+        else if(listRegProf[reg]<profitMin){
+            profitMin=listRegProf[reg];
+            regMin=reg
+        }
+    }
+    printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %.2f\n",regMin,profitMin)
+    }' Laporan-TokoShiSop.tsv >> hasil.txt
+```
+
+`if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Untuk setiap baris, untuk menemukan region dengan profit tersedikit, maka kita dapat menghitung jumlah profit per region dari baris data yang mengandung masing-masing region. Karena **Region** berada pada kolom ke 13, kita menggunakan map `listRegProf` dengan indeks `$13` yang isinya akan selalu bertambah dengan `$21` yaitu kolom yang berisi **Profit**.
+
+Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **Region** dengan**Total Profit** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listRegProf`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
+
+```bash
+    END {
+        i=0;
+        profitMin;
+        regMin;
+        for (reg in listRegProf) {
+        if(i==0){
+            profitMin=listRegProf[reg];
+            regMin=reg;
+            i++;
+        }
+        else if(listRegProf[reg]<profitMin){
+            profitMin=listRegProf[reg];
+            regMin=reg
+        }
+    }
+    printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %.2f\n",regMin,profitMin)
+    }' Laporan-TokoShiSop.tsv >> hasil.txt
+```
+
+### 2e
+Pada poin e, kita disuruh menyatukan seluruh command dari poin a sampai poin d pada satu script bernama `soal2_generate_laporan_ihir_shisop.sh`. Setelah script tersebut dijalankan, maka akan menghasilkan file `hasil.txt` berisikan:
+
+```text
+    Transaksi terakhir dengan profit percentage terbesar yaitu 9952 dengan persentase 100%.
+
+    Daftar nama customer di Albuquerque pada tahun 2017 antara lain:
+    Benjamin Farhat
+    David Wiener
+    Michelle Lonsdale
+    Susan Vittorini
+
+    Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan 1783 transaksi.
+
+    Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706.36
+```
+
 ## No 3

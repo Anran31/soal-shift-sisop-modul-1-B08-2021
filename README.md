@@ -402,3 +402,98 @@ Pada poin e, kita disuruh menyatukan seluruh command dari poin a sampai poin d p
 ```
 
 ## No 3
+
+Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhaku juga merupakan seorang yang pemalas sehingga ia tidak ingin repot-repot mencari foto, selain itu ia juga seorang pemalu, sehingga ia tidak ingin ada orang yang melihat koleksinya tersebut, sayangnya ia memiliki teman bernama Steven yang memiliki rasa kepo yang luar biasa. Kuuhaku pun memiliki ide agar Steven tidak bisa melihat koleksinya, serta untuk mempermudah hidupnya, yaitu dengan meminta bantuan kalian. Idenya adalah:
+
+### 3a
+Membuat script untuk **mengunduh** 23 gambar dari "https://loremflickr.com/320/240/kitten" serta **menyimpan log-nya** ke file "Foto.log". Karena gambar yang diunduh acak, ada kemungkinan gambar yang sama terunduh lebih dari sekali, oleh karena itu kalian harus **menghapus gambar yang sama** (tidak perlu mengunduh gambar lagi untuk menggantinya). Kemudian **menyimpan** gambar-gambar tersebut dengan nama "Koleksi_XX" dengan nomor yang **berurutan tanpa ada nomor yang hilang** (contoh : Koleksi_01, Koleksi_02, ...)
+
+Untuk menyelesaikan soal pada poin ini, maka kita dapat membuat script seperti di bawah ini:
+
+```bash
+    #!/bin/bash
+
+    for i in {1..23}; do
+        wget -a Foto.log https://loremflickr.com/320/240/kitten -O "Koleksi_$i"
+        maxCheck=$((i-1))
+        for (( a=1; a<=maxCheck; a++ ))
+        do
+        if [ -f Koleksi_$a ]; then
+            if comm Koleksi_$a Koleksi_$i &> /dev/null;
+            then rm Koleksi_$i
+                break;
+            fi
+        fi 
+        done
+    done
+
+    for i in {1..23}; do
+        if [ ! -f Koleksi_$i ]; then
+        for (( j=23; j>i; j-- ))
+        do
+        if [ -f Koleksi_$j ]; then
+            mv Koleksi_$j Koleksi_$i
+            break
+        fi
+        done
+        fi
+    done
+
+    for i in {1..9}; do
+        if [ -f Koleksi_$i ]; then
+        mv Koleksi_$i Koleksi_0$i
+        fi
+    done
+```
+
+#### Penjelasan
+
+```bash
+    for i in {1..23}; do
+        wget -a Foto.log https://loremflickr.com/320/240/kitten -O "Koleksi_$i"
+```
+
+Kode di atas digunakan untuk mendownload gambar dari `https://loremflickr.com/320/240/kitten` sebanyak 23 dan log-nya ditulis pada `Foto.log` serta gambar yang didownload direname menjadi Koleksi_1,Koleksi_2, dan seterusnya.
+
+```bash
+        maxCheck=$((i-1))
+        for (( a=1; a<=maxCheck; a++ ))
+        do
+        if [ -f Koleksi_$a ]; then
+            if comm Koleksi_$a Koleksi_$i &> /dev/null;
+            then rm Koleksi_$i
+                break;
+            fi
+        fi 
+        done
+```
+
+Kode di atas digunakan untuk mengecek menggunakan `comm Koleksi_$a Koleksi_$i` apakah gambar yang baru didownload merupakan duplikat dari sebuah gambar yang pernah kita download. Jika ternyata merupakan sebuah duplikat, maka gambar yang barusan kita download akan dihapus dan berhenti melakukan pengecekan.
+
+```bash
+    for i in {1..23}; do
+        if [ ! -f Koleksi_$i ]; then
+        for (( j=23; j>i; j-- ))
+        do
+        if [ -f Koleksi_$j ]; then
+            mv Koleksi_$j Koleksi_$i
+            break
+        fi
+        done
+        fi
+    done
+```
+
+Kode di atas digunakan untuk mengecek apakah ada nama gambar yang tidak berurutan karena terhapus. Maka kita akan merename file yang paling terakhir di urutan untuk mengisi nomor yang hilang karena terhapus tadi.
+
+```bash
+    for i in {1..9}; do
+        if [ -f Koleksi_$i ]; then
+        mv Koleksi_$i Koleksi_0$i
+        fi
+    done
+```
+
+Dan kode bagian terakhir ini digunakan untuk merename file yang masih berformat `Koleksi_X` menjadi `Koleksi_XX`.
+
+### 3b

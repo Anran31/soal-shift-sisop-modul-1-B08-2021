@@ -650,6 +650,8 @@ Fungsi download adalah gabungan dari script 3a dan 3b, tetapi yang membedakannya
 
 Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan **memindahkan seluruh folder ke zip** yang diberi nama “Koleksi.zip” dan mengunci **zip** tersebut dengan **password** berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
 
+Untuk menyelesaikan soal pada poin d, maka kita dapat membuat script seperti ini:
+
 ```bash
     #!/bin/bash
 
@@ -660,3 +662,23 @@ Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat scri
         rm -r $dirName
         done
 ```
+#### Penjelasan
+
+```bash
+    pass=$(date +"%m%d%Y")
+    cd /home/anran/sisop/shift1/soal3
+```
+
+Pertama, kita simpan password untuk zip kita di variabel `pass`, kemudian kita berpindah diektori ke direktori dimana folder Kelinci dan Kucing tersimpan menggunakan `cd`. Setelah itu, untuk semua direktori yang terdapat huruh `K` dan `_` maka direktori itu akan kita jadikan satu zip pada `Koleksi.zip` menggunakan command `zip -q -P $pass -r Koleksi $dirName` dan folder yang sudah dimasukkan ke dalam zip dihapus menggunakan `rm -r $dirName`.
+
+### 3e
+
+Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore, ia memintamu untuk membuat koleksinya ter-zip saat kuliah saja, selain dari waktu yang disebutkan, ia ingin koleksinya ter-unzip dan tidak ada file zip sama sekali.
+
+Untuk menyelesaikan soal ini, maka kita hanya perlu membuat tugas untuk dijalankan crontab seperti ini:
+
+```bash
+    0 18 * * 1-5 cd /home/anran/sisop/shift1/soal3 && pass=$(date +"\%m\%d\%Y") && unzip -P $pas>
+    0 7 * * 1-5 /bin/bash /home/anran/sisop/shift1/soal3/soal3d.sh
+```
+

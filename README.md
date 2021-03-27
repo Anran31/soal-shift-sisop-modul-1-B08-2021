@@ -545,3 +545,106 @@ Bagian `cd` digunakan untuk memindah lokasi script kita bekerja ke directory tem
 Karena kita hanya perlu menjalankan script ini sekali saja, maka pada bagian di atas digunakan untuk mengecek apakah pada suatu hari kita sudah pernah membuat direktori dengan nama `$dirName`. Jika iya maka tidak perlu menjalankan apa-apa, tetapi jika belum, maka kita akan membuat direktori baru bernama `$dirName` yaitu tanggal hari tersebut, kemudian kita menjalankan script yang ada pada poin 3a, kemudian memindahkan seluruh foto yang terdownload beserta log nya ke direktori yang barusan dibuat.
 
 ### 3c
+
+Agar kuuhaku tidak bosan dengan gambar anak kucing, ia juga memintamu untuk mengunduh gambar kelinci dari "https://loremflickr.com/320/240/bunny". Kuuhaku memintamu **mengunduh** gambar kucing dan kelinci **secara bergantian** (yang pertama bebas. contoh : tanggal 30 kucing > tanggal 31 kelinci > tanggal 1 kucing > ... ). Untuk membedakan folder yang berisi gambar kucing dan gambar kelinci, **nama folder diberi awalan "Kucing_" atau "Kelinci_"** (contoh : "Kucing_13-03-2023").
+
+Untuk menyelasaik soal pada poin c ini, maka kita bisa menggabungkan script pada poin 3a dan 3b serta memodifikasinya menjadi:
+
+```bash
+    #!/bin/bash
+
+    Download () {
+        declare -a link
+            link[0]="https://loremflickr.com/320/240/kitten"
+            link[1]="https://loremflickr.com/320/240/bunny"
+
+        for i in {1..23}; do
+            wget -a Foto.log "${link[$1]}" -O "Koleksi_$i"
+            maxCheck=$((i-1))
+                for (( a=1; a<=maxCheck; a++ ))
+                do
+                if [ -f Koleksi_$a ]; then
+                        if comm Koleksi_$a Koleksi_$i &> /dev/null;
+                        then rm Koleksi_$i
+                        break;
+                    fi
+                fi 
+                done
+        done
+
+        for i in {1..23}; do
+                if [ ! -f Koleksi_$i ]; then
+                    for (( j=23; j>i; j-- ))
+                    do
+                    if [ -f Koleksi_$j ]; then
+                            mv Koleksi_$j Koleksi_$i
+                            break
+                    fi
+                    done
+                fi
+        done
+
+        for i in {1..9}; do
+                if [ -f Koleksi_$i ]; then
+                mv Koleksi_$i Koleksi_0$i
+                fi
+        done
+        
+        declare -a dirName
+            dirName[0]="Kucing_$(date +"%d-%m-%Y")"
+        dirName[1]="Kelinci_$(date +"%d-%m-%Y")"
+        
+        mkdir ${dirName[$1]}
+        mv Koleksi_{01..23} ${dirName[$1]} &> /dev/null
+        mv Foto.log ${dirName[$1]} 
+    }
+
+    jmlKuc=$(find Kucing_* -maxdepth 0 2>/dev/null | wc -l)
+    jmlKel=$(find Kelinci_* -maxdepth 0 2>/dev/null | wc -l)
+
+    if (( jmlKuc == jmlKel )); 
+        then Download "0"
+            elif (( jmlKuc > jmlKel ))
+            then Download "1"
+    fi
+```
+
+#### Penjelasan
+
+```bash
+    jmlKuc=$(find Kucing_* -maxdepth 0 2>/dev/null | wc -l)
+    jmlKel=$(find Kelinci_* -maxdepth 0 2>/dev/null | wc -l)
+    if (( jmlKuc == jmlKel )); 
+        then Download "0"
+            elif (( jmlKuc > jmlKel ))
+            then Download "1"
+    fi
+```
+
+Pada bagian kode di atas, kita menghitung jumlah folder yang berawalan `Kucing_` dan `Kelinci_` serta menghitung jumlahnya masing-masing. Jika jumlah folder keduanya sama, maka akan menjalankan fungsi Download dengan argumen `0`, tetapi jika jumlah folder kucing lebih banyak, maka akan menjalankan fungsi Download dengan argumen `1`.
+
+```bash
+    Download () {
+        declare -a link
+            link[0]="https://loremflickr.com/320/240/kitten"
+            link[1]="https://loremflickr.com/320/240/bunny"
+
+        for i in {1..23}; do
+            wget -a Foto.log "${link[$1]}" -O "Koleksi_$i"
+    ............
+    ............
+    ............
+        declare -a dirName
+            dirName[0]="Kucing_$(date +"%d-%m-%Y")"
+        dirName[1]="Kelinci_$(date +"%d-%m-%Y")"
+        
+        mkdir ${dirName[$1]}
+        mv Koleksi_{01..23} ${dirName[$1]} &> /dev/null
+        mv Foto.log ${dirName[$1]} 
+    }
+```
+
+Fungsi download adalah gabungan dari script 3a dan 3b, tetapi yang membedakannya hanyalah kita menyimpan `link` dan `dirName` dalam sebuah array agar kita dapat memanggil sesuai dengan argumen yang diinputkan. Jika menerima argumen `0` akan mendownload gambar kucing dan membuat direktori bernama `Kucing_XX-XX-XXXX` kemudian memindahkan Foto.log, seluruh gambar kucing ke direktori tersebut. Jika menerima argumen `1` maka kucing akan diganti dengan kelinci.
+
+### 3d
+

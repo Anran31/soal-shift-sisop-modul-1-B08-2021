@@ -497,3 +497,4 @@ Kode di atas digunakan untuk mengecek apakah ada nama gambar yang tidak beruruta
 Dan kode bagian terakhir ini digunakan untuk merename file yang masih berformat `Koleksi_X` menjadi `Koleksi_XX`.
 
 ### 3b
+Karena Kuuhaku malas untuk menjalankan script tersebut secara manual, ia juga meminta kalian untuk menjalankan script tersebut **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali (1,8,...)**, serta dari **tanggal 2 empat hari sekali(2,6,...)**. Supaya lebih rapi, gambar yang telah diunduh beserta log-nya, dipindahkan ke folder dengan nama tanggal unduhnya dengan format "DD-MM-YYYY" (contoh : "13-03-2023").

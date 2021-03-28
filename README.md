@@ -230,7 +230,7 @@ Untuk mendapatkan **Profit Percentage terbesar**, maka kita harus mengecek dari 
     }
     END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.txt
 ```
-Pada blok `BEGIN` terdapat `FS="\t"` untuk memberi tahu `awk` bahwa `Field Separator` yang digunakan adalah tab("\t"), kemudian kita juga menginisialisasi variabel `MaxPP` untuk menyimpan **Profit Percentage terbesar** yang ditemukan.
+Pada blok `BEGIN` terdapat `FS="\t"` untuk memberi tahu `awk` bahwa `Field Separator` atau penanda dijalankannya command, dan yang digunakan adalah tab("\t"), kemudian kita juga menginisialisasi variabel `MaxPP` untuk menyimpan **Profit Percentage terbesar** yang ditemukan.
 
 Kemudian `if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Untuk setiap baris, kita menghitung **Profit Percentage** sesuai dengan rumus dimana `$21` merupakan kolom yang memiliki data **Profit** dan `$18` memlik data **Sales**. Jika **Profit Percentage** pada baris tertentu lebih besar daripada **Profit Percentage terbesar** yang tersimpan, maka **Profit Percentage terbesar** akan direplace, serta **Row ID** disimpan di variabel `MaxID`.
 
@@ -360,7 +360,7 @@ Pada poin ini, Manis ingin mencari **wilayah bagian (region) yang memiliki total
     }' Laporan-TokoShiSop.tsv >> hasil.txt
 ```
 
-`if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Untuk setiap baris, untuk menemukan region dengan profit tersedikit, maka kita dapat menghitung jumlah profit per region dari baris data yang mengandung masing-masing region. Karena **Region** berada pada kolom ke 13, kita menggunakan map `listRegProf` dengan indeks `$13` yang isinya akan selalu bertambah dengan `$21` yaitu kolom yang berisi **Profit**.
+`if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Di setiap baris, untuk menemukan region dengan profit tersedikit, maka kita dapat menghitung jumlah profit per region dari baris data yang mengandung masing-masing region. Karena **Region** berada pada kolom ke 13, kita menggunakan map `listRegProf` dengan indeks `$13` yang isinya akan selalu bertambah dengan `$21` yaitu kolom yang berisi **Profit**.
 
 Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **Region** dengan**Total Profit** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listRegProf`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
 

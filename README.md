@@ -18,7 +18,6 @@ Setiap baris pada data tersebut memiliki format sebagai berikut:
 ```
 
 ### 1a
-
 Pada soal 1a, Kita disuruh membuat sebuah regex untuk mengumpulkan informasi dari setiap baris pada _syslog.log_ berupa:  jenis log (ERROR/INFO), pesan log, dan username.
 Untuk menyelesaikan soal pada poin ini, maka kita dapat menggunakan command:
 
@@ -40,7 +39,6 @@ Ketika kita menjalankan command di atas, maka kita akan mendapatkan hasil sepert
 ```
 
 ### 1b
-
 Pada soal 1b, Kita disuruh menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
 Untuk menyelesaikan soal pada poin ini, maka kita dapat menggunakan command:
 
@@ -71,7 +69,6 @@ Untuk menghitung jumlah kemunculan tiap error, maka hasil dari command di atas d
 ```
 
 ### 1c
-
 Pada soal 1c, kita harus menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya.
 Untuk menyelesaikan soal pada poin ini, maka kita dapat menggunakan command:
 
@@ -124,8 +121,8 @@ Pada command diatas, option `w` pada `grep` berfungsi untuk mengambil string yan
 
 Sedangkan untuk mendapatkan jumlah INFO yang dimiliki user tersebut, commandnya hampir sama dengan command untuk mendapatkan jumlah ERROR, tetapi command `grep "ERROR"` diganti dengan `grep "INFO"` dan disimpan di variabel `infoCount`.
 
-### 1d
 
+### 1d
 Pada soal 1d, dengan data yang kita dapatkan di poin 1b, kita harus membuat file error_message.csv dengan header Error,Count yang kemudian diikuti oleh daftar pesan error dan jumlah kemunculannya diurutkan berdasarkan jumlah kemunculan pesan error dari yang terbanyak seperti ini:
 
 ```text
@@ -205,6 +202,8 @@ Kemudian meng-append seluruh hasil dari poin 1c ke user_statistic.csv.
     printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount" >> user_statistic.csv
 ```
 
+
+
 ## No 2
 
 Kita merupakan kepala gudang yang mengatur keluar masuknya barang di sebuah _startup_ bernama "TokoShiSop". Steven, Manis, dan Clemong meminta kita untuk mencari beberapa kesimpulan dari data penjualan “Laporan-TokoShiSop.tsv” kemudian seluruh hasilnya disimpan di `hasil.txt`. “Laporan-TokoShiSop.tsv” memiliki 21 kolom data yang berisikan data seperti **Row ID**, **Customer Name**,**Sales**, **Profit**, dan lain-lain.
@@ -230,11 +229,12 @@ Untuk mendapatkan **Profit Percentage terbesar**, maka kita harus mengecek dari 
     }
     END {printf ("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %d%%.\n",MaxID,MaxPP)}' Laporan-TokoShiSop.tsv > hasil.txt
 ```
-Pada blok `BEGIN` terdapat `FS="\t"` untuk memberi tahu `awk` bahwa `Field Separator` atau penanda dijalankannya command, dan yang digunakan adalah tab("\t"), kemudian kita juga menginisialisasi variabel `MaxPP` untuk menyimpan **Profit Percentage terbesar** yang ditemukan.
+Pada blok `BEGIN` terdapat `FS="\t"` untuk memberi tahu `awk` bahwa `Field Separator` atau penanda dijalankannya command adalah tab("\t"), kemudian kita juga menginisialisasi variabel `MaxPP` untuk menyimpan **Profit Percentage terbesar** yang ditemukan.
 
 Kemudian `if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Untuk setiap baris, kita menghitung **Profit Percentage** sesuai dengan rumus dimana `$21` merupakan kolom yang memiliki data **Profit** dan `$18` memlik data **Sales**. Jika **Profit Percentage** pada baris tertentu lebih besar daripada **Profit Percentage terbesar** yang tersimpan, maka **Profit Percentage terbesar** akan direplace, serta **Row ID** disimpan di variabel `MaxID`.
 
 Ketika sudah mengecek sampai akhir maka pada blok `END` akan diprint sesuai format di `hasil.txt`.
+
 
 ### 2b
 Pada poin ini, Clemong memiliki rencana promosi di Albuquerque menggunakan metode MLM. Oleh karena itu, Clemong membutuhkan **daftar nama customer pada transaksi tahun 2017 di Albuquerque**.
@@ -276,7 +276,6 @@ Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` daftar
 ```
 
 ### 2c
-
 Pada poin ini, Clemong membutuhkan **segment customer** dan **jumlah transaksinya** yang paling sedikit. TokoShiSop berfokus tiga segment customer, antara lain: Home Office, Consumer, dan Corporate. Untuk menyelesaikan soal ini, kita dapat menggunakan `awk` seperti ini:
 
 ```bash
@@ -309,7 +308,7 @@ Untuk menghitung jumlah transaksi per segment, maka kita dapat menghitung jumlah
     $8~/Consumer/||$8~/Corporate/||$8~/Home Office/ {listSegment[$8]++}
 ```
 
-Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **segment customer** dengan**jumlah transaksinya** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listSegment`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
+Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **segment customer** dengan **jumlah transaksinya** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listSegment`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
 
 ```bash
     END {
@@ -332,7 +331,6 @@ Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita m
 ```
 
 ### 2d
-
 Pada poin ini, Manis ingin mencari **wilayah bagian (region) yang memiliki total keuntungan (profit) paling sedikit dan total keuntungan wilayah tersebut**. Untuk menyelesaikan soal ini, kita dapat menggunakan `awk` seperti ini:
 
 ```bash
@@ -362,7 +360,7 @@ Pada poin ini, Manis ingin mencari **wilayah bagian (region) yang memiliki total
 
 `if (NR>1)` digunakan untuk mengecek setiap baris setelah header. Di setiap baris, untuk menemukan region dengan profit tersedikit, maka kita dapat menghitung jumlah profit per region dari baris data yang mengandung masing-masing region. Karena **Region** berada pada kolom ke 13, kita menggunakan map `listRegProf` dengan indeks `$13` yang isinya akan selalu bertambah dengan `$21` yaitu kolom yang berisi **Profit**.
 
-Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **Region** dengan**Total Profit** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listRegProf`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
+Kemudian ketika sudah selesai mencari pada seluruh baris, Pada blok `END` kita mencari **Region** dengan **Total Profit** yang paling sedikit menggunakan `for` loop yang membandingkan isi map `listRegProf`. Ketika sudah ditemukan yang paling sedikit, maka akan diprint ke `hasil.txt` sesuai dengan format.
 
 ```bash
     END {
@@ -401,9 +399,12 @@ Pada poin e, kita disuruh menyatukan seluruh command dari poin a sampai poin d p
     Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706.36
 ```
 
+
+
 ## No 3
 
 Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhaku juga merupakan seorang yang pemalas sehingga ia tidak ingin repot-repot mencari foto, selain itu ia juga seorang pemalu, sehingga ia tidak ingin ada orang yang melihat koleksinya tersebut, sayangnya ia memiliki teman bernama Steven yang memiliki rasa kepo yang luar biasa. Kuuhaku pun memiliki ide agar Steven tidak bisa melihat koleksinya, serta untuk mempermudah hidupnya, yaitu dengan meminta bantuan kalian. Idenya adalah:
+
 
 ### 3a
 Membuat script untuk **mengunduh** 23 gambar dari "https://loremflickr.com/320/240/kitten" serta **menyimpan log-nya** ke file "Foto.log". Karena gambar yang diunduh acak, ada kemungkinan gambar yang sama terunduh lebih dari sekali, oleh karena itu kalian harus **menghapus gambar yang sama** (tidak perlu mengunduh gambar lagi untuk menggantinya). Kemudian **menyimpan** gambar-gambar tersebut dengan nama "Koleksi_XX" dengan nomor yang **berurutan tanpa ada nomor yang hilang** (contoh : Koleksi_01, Koleksi_02, ...)
@@ -496,6 +497,7 @@ Kode di atas digunakan untuk mengecek apakah ada nama gambar yang tidak beruruta
 
 Dan kode bagian terakhir ini digunakan untuk merename file yang masih berformat `Koleksi_X` menjadi `Koleksi_XX`.
 
+
 ### 3b
 Karena Kuuhaku malas untuk menjalankan script tersebut secara manual, ia juga meminta kalian untuk menjalankan script tersebut **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali (1,8,...)**, serta dari **tanggal 2 empat hari sekali(2,6,...)**. Supaya lebih rapi, gambar yang telah diunduh beserta log-nya, dipindahkan ke folder dengan nama tanggal unduhnya dengan format "DD-MM-YYYY" (contoh : "13-03-2023").
 
@@ -544,8 +546,8 @@ Bagian `cd` digunakan untuk memindah lokasi script kita bekerja ke directory tem
 
 Karena kita hanya perlu menjalankan script ini sekali saja, maka pada bagian di atas digunakan untuk mengecek apakah pada suatu hari kita sudah pernah membuat direktori dengan nama `$dirName`. Jika iya maka tidak perlu menjalankan apa-apa, tetapi jika belum, maka kita akan membuat direktori baru bernama `$dirName` yaitu tanggal hari tersebut, kemudian kita menjalankan script yang ada pada poin 3a, kemudian memindahkan seluruh foto yang terdownload beserta log nya ke direktori yang barusan dibuat.
 
-### 3c
 
+### 3c
 Agar kuuhaku tidak bosan dengan gambar anak kucing, ia juga memintamu untuk mengunduh gambar kelinci dari "https://loremflickr.com/320/240/bunny". Kuuhaku memintamu **mengunduh** gambar kucing dan kelinci **secara bergantian** (yang pertama bebas. contoh : tanggal 30 kucing > tanggal 31 kelinci > tanggal 1 kucing > ... ). Untuk membedakan folder yang berisi gambar kucing dan gambar kelinci, **nama folder diberi awalan "Kucing_" atau "Kelinci_"** (contoh : "Kucing_13-03-2023").
 
 Untuk menyelasaik soal pada poin c ini, maka kita bisa menggabungkan script pada poin 3a dan 3b serta memodifikasinya menjadi:
@@ -647,7 +649,6 @@ Pada bagian kode di atas, kita menghitung jumlah folder yang berawalan `Kucing_`
 Fungsi download adalah gabungan dari script 3a dan 3b, tetapi yang membedakannya hanyalah kita menyimpan `link` dan `dirName` dalam sebuah array agar kita dapat memanggil sesuai dengan argumen yang diinputkan. Jika menerima argumen `0` akan mendownload gambar kucing dan membuat direktori bernama `Kucing_XX-XX-XXXX` kemudian memindahkan Foto.log, seluruh gambar kucing ke direktori tersebut. Jika menerima argumen `1` maka kucing akan diganti dengan kelinci.
 
 ### 3d
-
 Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan **memindahkan seluruh folder ke zip** yang diberi nama “Koleksi.zip” dan mengunci **zip** tersebut dengan **password** berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
 
 Untuk menyelesaikan soal pada poin d, maka kita dapat membuat script seperti ini:
@@ -671,8 +672,8 @@ Untuk menyelesaikan soal pada poin d, maka kita dapat membuat script seperti ini
 
 Pertama, kita simpan password untuk zip kita di variabel `pass`, kemudian kita berpindah diektori ke direktori dimana folder Kelinci dan Kucing tersimpan menggunakan `cd`. Setelah itu, untuk semua direktori yang terdapat huruh `K` dan `_` maka direktori itu akan kita jadikan satu zip pada `Koleksi.zip` menggunakan command `zip -q -P $pass -r Koleksi $dirName` dan folder yang sudah dimasukkan ke dalam zip dihapus menggunakan `rm -r $dirName`.
 
-### 3e
 
+### 3e
 Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore, ia memintamu untuk membuat koleksinya ter-zip saat kuliah saja, selain dari waktu yang disebutkan, ia ingin koleksinya ter-unzip dan tidak ada file zip sama sekali.
 
 Untuk menyelesaikan soal ini, maka kita hanya perlu membuat tugas untuk dijalankan crontab seperti ini:

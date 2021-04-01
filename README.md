@@ -178,7 +178,7 @@ Setelah itu diappend ke error_message.csv sesuai dengan format menggunakan:
     printf "%s,%d\n" "$message" "$count" >> error_message.csv
 ```
 
-**Maka hasil dari nomer 1d adalah **
+**Maka hasil dari nomer 1d adalah**
 
 ![1617284682235](https://user-images.githubusercontent.com/76694068/113304592-622ea400-932c-11eb-9687-91d02934cdeb.jpg)
 
@@ -408,7 +408,7 @@ Pada poin e, kita disuruh menyatukan seluruh command dari poin a sampai poin d p
 
 **Hasil dari seluruh sub nomer di soal no 2 akan dikumpulkan di file `hasil.txt`, maka berikut adalah hasilnya**
 
-![Screenshot (249)](https://user-images.githubusercontent.com/76694068/113308621-8c826080-9330-11eb-8e8c-bbebcc6a0331.png)
+![Screenshot (252)](https://user-images.githubusercontent.com/76694068/113312501-91491380-9334-11eb-8bdb-4b13cd6f5887.png)
 
 
 

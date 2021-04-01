@@ -179,7 +179,9 @@ Setelah itu diappend ke error_message.csv sesuai dengan format menggunakan:
 ```
 
 maka hasil dari nomer 1d adalah 
-![1617284725604](https://user-images.githubusercontent.com/76694068/113304580-5fcc4a00-932c-11eb-98bc-3757ea741058.jpg)
+
+![1617284682235](https://user-images.githubusercontent.com/76694068/113304592-622ea400-932c-11eb-9687-91d02934cdeb.jpg)
+
 
 ### 1e
 Pada poin 1e, kita disuruh menggunakan informasi yang didapatkan pada poin 1c untuk dituliskan ke dalam file user_statistic.csv dengan header Username,INFO,ERROR diurutkan berdasarkan username secara ascending. Untuk menyelesaikan problem poin ini, kita dapat menggunakan:
@@ -205,8 +207,8 @@ Kemudian meng-append seluruh hasil dari poin 1c ke user_statistic.csv.
     printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount" >> user_statistic.csv
 ```
 Hasilnya adalah 
-![1617284682235](https://user-images.githubusercontent.com/76694068/113304592-622ea400-932c-11eb-9687-91d02934cdeb.jpg)
 
+![1617284725604](https://user-images.githubusercontent.com/76694068/113304580-5fcc4a00-932c-11eb-98bc-3757ea741058.jpg)
 
 
 ## No 2
@@ -503,6 +505,7 @@ Kode di atas digunakan untuk mengecek apakah ada nama gambar yang tidak beruruta
 Dan kode bagian terakhir ini digunakan untuk merename file yang masih berformat `Koleksi_X` menjadi `Koleksi_XX`.
 
 Hasilnya adalah
+
 ![1617284965546](https://user-images.githubusercontent.com/76694068/113304595-62c73a80-932c-11eb-88a4-4bab7911f5a6.jpg)
 
 
@@ -555,6 +558,7 @@ Bagian `cd` digunakan untuk memindah lokasi script kita bekerja ke directory tem
 Karena kita hanya perlu menjalankan script ini sekali saja, maka pada bagian di atas digunakan untuk mengecek apakah pada suatu hari kita sudah pernah membuat direktori dengan nama `$dirName`. Jika iya maka tidak perlu menjalankan apa-apa, tetapi jika belum, maka kita akan membuat direktori baru bernama `$dirName` yaitu tanggal hari tersebut, kemudian kita menjalankan script yang ada pada poin 3a, kemudian memindahkan seluruh foto yang terdownload beserta log nya ke direktori yang barusan dibuat.
 
 Hasilnya adalah 
+
 ![1617285047289](https://user-images.githubusercontent.com/76694068/113304599-63f86780-932c-11eb-866c-b1e1c57ca3ee.jpg)
 
 

@@ -178,7 +178,7 @@ Setelah itu diappend ke error_message.csv sesuai dengan format menggunakan:
     printf "%s,%d\n" "$message" "$count" >> error_message.csv
 ```
 
-maka hasil dari nomer 1d adalah 
+**Maka hasil dari nomer 1d adalah **
 
 ![1617284682235](https://user-images.githubusercontent.com/76694068/113304592-622ea400-932c-11eb-9687-91d02934cdeb.jpg)
 
@@ -206,7 +206,7 @@ Kemudian meng-append seluruh hasil dari poin 1c ke user_statistic.csv.
 ```bash
     printf "%s,%d,%d\n" "$user" "$infoCount" "$errorCount" >> user_statistic.csv
 ```
-Hasilnya adalah 
+**Hasilnya adalah**
 
 ![1617284725604](https://user-images.githubusercontent.com/76694068/113304580-5fcc4a00-932c-11eb-98bc-3757ea741058.jpg)
 
@@ -406,6 +406,10 @@ Pada poin e, kita disuruh menyatukan seluruh command dari poin a sampai poin d p
     Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706.36
 ```
 
+**Hasil dari seluruh sub nomer di soal no 2 akan dikumpulkan di file `hasil.txt`, maka berikut adalah hasilnya**
+
+![Screenshot (249)](https://user-images.githubusercontent.com/76694068/113308621-8c826080-9330-11eb-8e8c-bbebcc6a0331.png)
+
 
 
 ## No 3
@@ -504,7 +508,7 @@ Kode di atas digunakan untuk mengecek apakah ada nama gambar yang tidak beruruta
 
 Dan kode bagian terakhir ini digunakan untuk merename file yang masih berformat `Koleksi_X` menjadi `Koleksi_XX`.
 
-Hasilnya adalah
+**Hasilnya adalah**
 
 ![1617284965546](https://user-images.githubusercontent.com/76694068/113304595-62c73a80-932c-11eb-88a4-4bab7911f5a6.jpg)
 
@@ -557,7 +561,7 @@ Bagian `cd` digunakan untuk memindah lokasi script kita bekerja ke directory tem
 
 Karena kita hanya perlu menjalankan script ini sekali saja, maka pada bagian di atas digunakan untuk mengecek apakah pada suatu hari kita sudah pernah membuat direktori dengan nama `$dirName`. Jika iya maka tidak perlu menjalankan apa-apa, tetapi jika belum, maka kita akan membuat direktori baru bernama `$dirName` yaitu tanggal hari tersebut, kemudian kita menjalankan script yang ada pada poin 3a, kemudian memindahkan seluruh foto yang terdownload beserta log nya ke direktori yang barusan dibuat.
 
-Hasilnya adalah 
+**Hasilnya adalah**
 
 ![1617285047289](https://user-images.githubusercontent.com/76694068/113304599-63f86780-932c-11eb-866c-b1e1c57ca3ee.jpg)
 
@@ -663,6 +667,12 @@ Pada bagian kode di atas, kita menghitung jumlah folder yang berawalan `Kucing_`
 
 Fungsi download adalah gabungan dari script 3a dan 3b, tetapi yang membedakannya hanyalah kita menyimpan `link` dan `dirName` dalam sebuah array agar kita dapat memanggil sesuai dengan argumen yang diinputkan. Jika menerima argumen `0` akan mendownload gambar kucing dan membuat direktori bernama `Kucing_XX-XX-XXXX` kemudian memindahkan Foto.log, seluruh gambar kucing ke direktori tersebut. Jika menerima argumen `1` maka kucing akan diganti dengan kelinci.
 
+**Hasilnya adalah**
+
+![3c](https://user-images.githubusercontent.com/76694068/113308555-7e344480-9330-11eb-9cf6-e5b7094aac16.jpg)
+
+
+
 ### 3d
 Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan **memindahkan seluruh folder ke zip** yang diberi nama “Koleksi.zip” dan mengunci **zip** tersebut dengan **password** berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
 
@@ -709,3 +719,21 @@ Karena kuuhaku meminta untuk men-zip seluruh foldernya pada jam 7 pagi setiap ha
     0 18 * * 1-5 cd /home/anran/sisop/shift1/soal3 && pass=$(date +"\%m\%d\%Y") && unzip -P $pass=$(date +"\%m\%d\%Y") && unzip -P $pass Koleksi.zip && rm Koleksi.zip
 ```
 Sedangkan saat jam 18.00 setiap hari senin-jumat, akan menjalankan crontab di atas. Pertama, kita harus pindah ke direktori tempat kita menyimpan Koleksi.zip menggunakan `cd /home/anran/sisop/shift1/soal3`. Kedua, kita menginisialisasi variabel `pass` yang berisi password untuk meng-unzip Koleksi.zip. Kemudian kita meng-unzip `Koleksi.zip` menggunakan command `unzip -P $pass Koleksi.zip` dan setelah itu menghapus `Koleksi.zip` setelah selesai meng-unzip.
+
+Untuk hasil dari nomer 3d dan 3e, akan dijadikan dalam 1 screenshoy dibawah ini
+
+**Hasil dari no 3d dan 3e : Sebelum jam 7**
+
+![3d e sblm jam 7](https://user-images.githubusercontent.com/76694068/113308551-7d9bae00-9330-11eb-881d-7cc97f1c3422.jpg)
+
+
+**Hasil dari no 3d dan 3e : Saat jam 7**
+
+![3 de jam 7](https://user-images.githubusercontent.com/76694068/113308542-7aa0bd80-9330-11eb-9079-8c5d4485cbbb.jpg)
+
+
+**Hasil dari no 3d dan 3e : Setelah jam 18.00**
+
+![3de stlh jam 18](https://user-images.githubusercontent.com/76694068/113308536-78d6fa00-9330-11eb-8aaa-1443469c412e.jpg)
+
+
